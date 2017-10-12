@@ -521,9 +521,7 @@ fu! s:AcceptSelection()
 "     cal s:Close()
     cal s:PrtExit()
     cal s:insertinsource(s:lines)
-    if s:restore_insert | exe 'normal j' | startinsert! | en
-let s:dosnip = 0
-    if s:dosnip | exe 'normal omod	' | en
+    if s:insert_mode | startinsert! | en
 endf
 
 fu! s:insertinsource(lines)
@@ -1001,8 +999,8 @@ fu! s:CurTypeName()
 endfu
 
 fu! lazysig#init(...)
-    let opts = a:0 ? a:1 : {'restore_insert': 0}
-    let s:restore_insert = opts['restore_insert']
+    let opts = a:0 ? a:1 : {'insert_mode': 0}
+    let s:insert_mode = opts['insert_mode']
 	if exists('s:init') || s:iscmdwin() | retu | en
 	let [s:ermsg, v:errmsg] = [v:errmsg, '']
 	let [s:matches, s:init] = [1, 1]
