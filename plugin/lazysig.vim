@@ -1,9 +1,8 @@
 " =============================================================================
-" File:          plugin/lazysig.vim
-" Description:   Fuzzy file, buffer, mru, tag, etc finder.
-" Author:        Kien Nguyen <github.com/kien>
+" Author:        Allen Haim <allen@netherrealm.net>
+" BasedOn:       CtrlP <github/ctrlpvim/ctrlp.vim>
+" OriginalAuthors:  CtrlP Dev team, Kien Nguyen <github.com/kien>
 " =============================================================================
-" GetLatestVimScripts: 3736 1 :AutoInstall: lazysig.zip
 
 if ( exists('g:loaded_lazysig') && g:loaded_lazysig ) || v:version < 700 || &cp
 	fini

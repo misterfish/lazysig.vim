@@ -1,10 +1,9 @@
 " =============================================================================
-" File:          autoload/lazysig/utils.vim
-" Description:   Utilities
-" Author:        Kien Nguyen <github.com/kien>
+" Author:        Allen Haim <allen@netherrealm.net>
+" BasedOn:       CtrlP <github/ctrlpvim/ctrlp.vim>
+" OriginalAuthors:  CtrlP Dev team, Kien Nguyen <github.com/kien>
 " =============================================================================
 
-" Static variables {{{1
 fu! lazysig#utils#lash()
 	retu &ssl || !exists('+ssl') ? '/' : '\'
 endf
@@ -30,7 +29,7 @@ endf
 cal lazysig#utils#opts()
 
 let s:wig_cond = v:version > 702 || ( v:version == 702 && has('patch051') )
-" Files and Directories {{{1
+
 fu! lazysig#utils#cachedir()
 	retu s:cache_dir
 endf
@@ -105,6 +104,4 @@ fu! lazysig#utils#fnesc(path, type, ...)
 	en
 	retu a:0 ? escape(path, a:1) : path
 endf
-"}}}
 
-" vim:fen:fdm=marker:fmr={{{,}}}:fdl=0:fdc=1:ts=2:sw=2:sts=2

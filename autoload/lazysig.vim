@@ -1,28 +1,17 @@
 " =============================================================================
-" File:          autoload/lazysig.vim
-" Description:   Fuzzy file, buffer, mru, tag, etc finder.
-" Author:        FPrompt Dev Team
-" Original:      Kien Nguyen <github.com/kien>
-" Version:       1.80
+" Author:        Allen Haim <allen@netherrealm.net>
+" BasedOn:       CtrlP <github/ctrlpvim/ctrlp.vim>
+" OriginalAuthors:  CtrlP Dev team, Kien Nguyen <github.com/kien>
 " =============================================================================
 
-" ** Static variables 
-" s:ignore() 
-fu! s:ignore()
-	retu {
-		\ 'dir': '\v[\/]()$',
-		\ 'file': '\v',
-		\ }
-endf
-
-let s:scriptpath = expand('<sfile>:p')
-let s:parserbin = scriptpath."/../parser"
+let s:scriptpath = expand('<sfile>:h:p')
+let s:parserbin = s:scriptpath."/../lazysig/parser/lazysig"
+let s:debug = 0
 
 let [s:pref, s:bpref, s:opts, s:new_opts, s:lc_opts] =
 	\ ['g:lazysig_', 'b:lazysig_', {
 	\ 'abbrev':                ['s:abbrev', {}],
 	\ 'arg_map':               ['s:argmap', 0],
-	\ 'custom_ignore':         ['s:usrign', s:ignore()],
 	\ 'dont_split':            ['s:nosplit', 'netrw'],
 	\ 'dotfiles':              ['s:showhidden', 0],
 	\ 'extensions':            ['s:extensions', []],
@@ -150,7 +139,6 @@ let s:coretypes = map(copy(g:lazysig_types), '[s:coretype_names[v:val], v:val]')
 
 " Get the options 
 fu! s:opts(...)
-	unl! s:usrign
 	for each in ['extensions'] | if exists('s:'.each)
 		let {each} = s:{each}
 	en | endfo
@@ -184,7 +172,6 @@ fu! s:opts(...)
 	if !exists('g:lazysig_newcache') | let g:lazysig_newcache = 0 | en
 	let s:maxdepth = min([s:maxdepth, 100])
 	let s:glob = s:showhidden ? '.*\|*' : '*'
-	let s:igntype = empty(s:usrign) ? -1 : type(s:usrign)
 	let s:lash = lazysig#utils#lash()
 	if s:keyloop
 		let s:glbs['imd'] = 0
@@ -598,29 +585,6 @@ fu! s:lash(...)
 	retu ( a:0 ? a:1 : s:dyncwd ) !~ '[\/]$' ? s:lash : ''
 endf
 
-fu! lazysig#igncwd(cwd)
-	retu lazysig#utils#glob(a:cwd, 0) == '' ||
-		\ ( s:igntype >= 0 && s:usrign(a:cwd, getftype(a:cwd)) )
-endf
-
-fu! s:usrign(item, type)
-	if s:igntype == 1 | retu a:item =~ s:usrign | en
-	if s:igntype == 2
-		if call(s:usrign, [a:item, a:type])
-			retu 1
-		en
-	elsei s:igntype == 4
-		if has_key(s:usrign, a:type) && s:usrign[a:type] != ''
-					\ && a:item =~ s:usrign[a:type]
-			retu 1
-		elsei has_key(s:usrign, 'func') && s:usrign['func'] != ''
-					\ && call(s:usrign['func'], [a:item, a:type])
-			retu 1
-		en
-	en
-	retu 0
-endf
-
 fu! lazysig#rmbasedir(items)
 	if a:items == []
 		retu a:items
@@ -1025,7 +989,8 @@ endf
 fu! s:executequery()
     let prompt = s:prompt[0]
     if prompt == '' | retu [] | en
-    let cmd = shellescape(s:parserbin).' 2>/dev/null'
+    let killerr = s:debug ? '' : ' 2>/dev/null'
+    let cmd = shellescape(s:parserbin).l:killerr
     sil let res = systemlist(cmd, prompt) " --- stdin.
     if empty(res) | retu ['✘'] | el | retu res | en
 endf
