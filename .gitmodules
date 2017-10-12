@@ -1,0 +1,3 @@
+[submodule "lazysig"]
+	path = lazysig
+	url = https://github.com/misterfish/lazysig
