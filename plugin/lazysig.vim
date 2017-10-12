@@ -16,8 +16,6 @@ let [g:lazysig_lines, g:lazysig_allfiles, g:lazysig_alltags, g:lazysig_alldirs,
 if !exists('g:lazysig_map') | let g:lazysig_map = '<Leader>]' | en
 if !exists('g:lazysig_imap') | let g:lazysig_imap = '<c-]>' | en
 
-" if !exists('g:lazysig_cmd') | let g:lazysig_cmd = 'Lazysig' | en
-
 let s:lazysig_cmd = 'Lazysig'
 let s:lazysig_cmd_i = 'LazysigI'
 

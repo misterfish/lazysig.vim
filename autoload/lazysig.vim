@@ -6,7 +6,7 @@
 
 let s:scriptpath = expand('<sfile>:h:p')
 let s:parserbin = s:scriptpath."/../lazysig/parser/lazysig"
-let s:debug = 0
+let s:debug = 1
 
 let [s:pref, s:bpref, s:opts, s:new_opts, s:lc_opts] =
 	\ ['g:lazysig_', 'b:lazysig_', {
