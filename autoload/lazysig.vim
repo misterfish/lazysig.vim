@@ -241,8 +241,8 @@ endf
 " --- achtung, failures here are silent.
 fu! s:Render(lines)
     " --- ma = modifiable
-	let [&ma, lines, s:res_count] = [1, a:lines, len(a:lines)]
-	let height = min([s:res_count, s:winmaxh])
+	let [&ma, lines, s:lines_count] = [1, a:lines, len(a:lines)]
+	let height = min([s:lines_count, s:winmaxh])
 	let cur_cmd = 'keepj norm! gg1|'
 
 	sil! exe '%d _ | res' height
@@ -521,7 +521,13 @@ fu! s:AcceptSelection()
 "     cal s:Close()
     cal s:PrtExit()
     cal s:insertinsource(s:lines)
-    if s:insert_mode | startinsert! | en
+
+    let l:godown = s:lines_count - 1
+    let l:l = repeat('j', l:godown)
+    let l:e = l:godown ? 'normal '.l:l : ''
+
+    if s:insert_mode | exe l:e | startinsert! | en
+
 endf
 
 fu! s:insertinsource(lines)
